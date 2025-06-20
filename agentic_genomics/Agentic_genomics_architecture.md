@@ -22,9 +22,9 @@ The initial scope of `agentic_genomics` is to automate the following process:
 4. Generate infrastructure-as-code (Terraform) to provision a cloud-based cluster suitable for running the pipeline.
 5. Deploy the cloud cluster using the generated blueprint.
 6. Provide the user with the necessary information to execute the Nextflow pipeline on the provisioned cluster.
+7. Executing the Nextflow pipeline on the cluster.
 
 **Out of Scope for Initial Release:**
-* Executing the Nextflow pipeline on the cluster.
 * Monitoring the running Nextflow job.
 * Analyzing pipeline outputs.
 * Supporting multiple cloud providers simultaneously (focus on Google Cloud Platform initially).
