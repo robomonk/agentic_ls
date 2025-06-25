@@ -1,5 +1,6 @@
 from google.adk.tools import BaseTool
 from google.adk.tools import tool_code
+from functools import lru_cache
 
 # In a real scenario, you'd use 'requests' or 'nf-core' CLI wrapper here.
 # For demonstration, we'll use mock data.
@@ -43,6 +44,7 @@ class ListNfCorePipelinesTool(BaseTool):
         # return response.json()
         return MOCK_NF_CORE_PIPELINES
 
+
 class GetPipelineSchemaTool(BaseTool):
     """
     A tool to retrieve the input schema (parameters) for a specific nf-core pipeline.
@@ -56,4 +58,9 @@ class GetPipelineSchemaTool(BaseTool):
 
     def _run(self, pipeline_name: str):
         # In a real implementation, this would parse nextflow_schema.json or call an API.
+        # Using lru_cache for demonstration of caching.
+        return self._get_cached_schema(pipeline_name)
+
+    @lru_cache(maxsize=128) # Cache up to 128 different pipeline schemas
+    def _get_cached_schema(self, pipeline_name: str):
         return MOCK_PIPELINE_SCHEMAS.get(pipeline_name, {"error": f"Schema not found for {pipeline_name}"})

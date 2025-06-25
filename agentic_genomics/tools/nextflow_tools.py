@@ -11,19 +11,20 @@ class CreateNextflowConfigTool(BaseTool):
             name="create_nextflow_config",
             description="Generates a nextflow.config file with specified content and returns its path.",
             parameters={
-                "config_content": {
+                "file_path": {
                     "type": "string",
-                    "description": "The full content of the nextflow.config file. Example: 'process.executor = \\'local\\''"
+                    "description": "The absolute path where the nextflow.config file should be created.",
+                },
+                "content": {
+                    "type": "string",
+                    "description": "The full content of the nextflow.config file. Example: 'process.executor = \\'local\\''",
                 }
             }
         )
 
-    def _run(self, config_content: str) -> str:
+    def _run(self, file_path: str, content: str) -> str:
         """Writes the config content to a file."""
-        # The config_content will now contain the full path
         try:
-            config_path = Path(config_content)
-            config_path.parent.mkdir(parents=True, exist_ok=True)  # Ensure directory exists
             config_path.write_text(config_content)
             return f"Successfully created nextflow.config at {str(config_path)}"
         except Exception as e:
@@ -38,20 +39,23 @@ class CreateParamsJsonTool(BaseTool):
             name="create_params_json",
             description="Creates a params.json file from a dictionary of parameters and returns its path.",
             parameters={
-                "params_data": {
+                "file_path": {
+                    "type": "string",
+                    "description": "The absolute path where the params.json file should be created.",
+                },
+                "content": {
                     "type": "object",
                     "description": "A dictionary containing the parameters for the pipeline. Example: {'input': 'data.csv', 'outdir': './results'}"
                 }
             }
         )
 
-    def _run(self, params_data: dict) -> str:
+    def _run(self, file_path: str, content: dict) -> str:
         """Writes the parameters dictionary to a JSON file."""
-        # The params_data dict will now contain the full path
         try:
-            params_path = Path(params_data["path"])
+            params_path = Path(file_path)
             params_path.parent.mkdir(parents=True, exist_ok=True)  # Ensure directory exists
-            params_path.write_text(json.dumps(params_data["content"], indent=4))  # params_data is a dict
+            params_path.write_text(json.dumps(content, indent=4))
             return f"Successfully created params.json at {str(params_path)}"
         except Exception as e:
             return f"Error creating params.json: {e}"
