@@ -24,7 +24,7 @@ class CreateNextflowConfigTool(BaseTool):
         try:
             config_path = Path(config_content)
             config_path.parent.mkdir(parents=True, exist_ok=True)  # Ensure directory exists
-            config_path.write_text(self.config_content)
+            config_path.write_text(config_content)
             return f"Successfully created nextflow.config at {str(config_path)}"
         except Exception as e:
             return f"Error creating nextflow.config: {e}"

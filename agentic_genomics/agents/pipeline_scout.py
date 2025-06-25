@@ -2,10 +2,6 @@ from google.adk.agents import LlmAgent
 from google.adk.tools import get_user_choice
 from tools.nf_core_tools import ListNfCorePipelinesTool, GetPipelineSchemaTool
 
-# Instantiate the tools
-list_nf_core_pipelines_tool = ListNfCorePipelinesTool()
-get_pipeline_schema_tool = GetPipelineSchemaTool()
-
 PipelineScoutAgent = LlmAgent(
     name="pipeline_scout_agent",
     model='gemini-2.5-pro-preview-05-06',
@@ -21,7 +17,7 @@ PipelineScoutAgent = LlmAgent(
     """,
     tools=[
         get_user_choice,
-        list_nf_core_pipelines_tool,
-        get_pipeline_schema_tool,
+        ListNfCorePipelinesTool(),
+        GetPipelineSchemaTool(),
     ],
 )
