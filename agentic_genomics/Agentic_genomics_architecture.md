@@ -68,40 +68,36 @@ The initial scope of `agentic_genomics` is to automate the following process:
 
 The `agentic_genomics` system follows a multi-agent architecture orchestrated by a central `OrchestratorAgent`. The workflow is primarily executed sequentially by specialized sub-agents.
 
+User/External System : Request (Analysis Task) -> OrchestratorAgent (ADK Root Agent)
+OrchestratorAgent (ADK Root Agent) : Delegates Tasks -> Sequential Deployment Workflow (SequentialAgent)
+Sequential Deployment Workflow (SequentialAgent) : Sub-Agents (PipelineScoutAgent, ConfiguratorAgent, BlueprintArchitectAgent, DeploymentEngineerAgent)
+PipelineScoutAgent (LlmAgent) - > ConfiguratorAgent (LlmAgent)
+ConfiguratorAgent (LlmAgent) - > BlueprintArchitectAgent (LlmAgent)
+BlueprintArchitectAgent (LlmAgent) - > DeploymentEngineerAgent (LlmAgent)
+DeploymentEngineerAgent (LlmAgent) - > OrchestratorAgent (ADK Root Agent)   
+
 +-----------------------+
-|   User/External System|
+|  User/External System
 +-----------+-----------+
 |
 | Request (Analysis Task)
 v
 +-----------------------+
-| OrchestratorAgent     |
+| OrchestratorAgent.    |
 | (ADK Root Agent)      |
 +-----------+-----------+
 |
 | Delegates Tasks
 v
-+-------------------------------------------------------------+
-| Sequential Deployment Workflow (SequentialAgent)          |
-|                                                             |
-| +-------------------+   +-------------------+   +---------------------+   +---------------------+ |
-| | PipelineScoutAgent|-->| ConfiguratorAgent |-->| BlueprintArchitect |-->| DeploymentEngineer  | |
-| | (LLM Agent)       |   | (LLM Agent)       |   | (LLM Agent)         |   | (LLM Agent)         | |
-| |                   |   |                   |   |                     |   |                     | |
-| +---------+---------+   +---------+---------+   +-----------+---------+   +-----------+---------+ |
-|           |                       |                       |                       |             |
-|           | Uses Tools            | Uses Tools            | Uses Tools            | Uses Tools  |
-|           v                       v                       v                       v             v
-| +---------+---------+ +---------+---------+ +-----------+---------+ +-----------+---------+ |
-| | nf-core Tools     | | Nextflow Tools    | | Terraform Tools     | | Terraform Tools     | |
-| | (Custom ADK Tools)| | (Custom ADK Tools)| | (Custom ADK Tools)  | | (Custom ADK Tools)  | |
-| +-------------------+ +-------------------+ +---------------------+ +---------------------+ |
-+---------------------------------------------------------------------------------------------+
++-----------------------------+ 1.SubAgent: PipelineScoutAgent(LLM) - Uses: nf-core Tootls
+| Sequential Deployment.      | 2.SubAgnet: ConfiguratorAgent(LLM) - Uses: Nextflow Tools
+| Workflow (SequentialAgent)  | 3.SubAgent: BlueprintArchitectAgent(LLM) - Uses: Terraform Tools
++-----------+-----------------+ 4.SubAgent: DeploymentEngineerAgent(LLM) - Uses: SKD/Cluster toolkit
 |
 | Status/Results
 v
 +-----------------------+
-|   User/External System|
+| User/External System. |
 +-----------------------+
 
 

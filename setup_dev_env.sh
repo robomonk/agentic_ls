@@ -26,6 +26,38 @@ echo "Initializing conda..."
 # which might have guards against running in non-interactive shells.
 source "${MINICONDA_INSTALL_PATH}/etc/profile.d/conda.sh"
  
+# --- Install Terraform and Google Cloud SDK (if not present) ---
+echo "Checking for required command-line tools..."
+
+# Check and install Terraform
+if ! command -v terraform &> /dev/null; then
+    echo "Terraform not found. Installing..."
+    # Note: This may require sudo privileges to write to /usr/local/bin
+    ARG_TERRAFORM_VERSION=1.8.5
+    wget https://releases.hashicorp.com/terraform/${ARG_TERRAFORM_VERSION}/terraform_${ARG_TERRAFORM_VERSION}_linux_amd64.zip -O /tmp/terraform.zip && \
+    unzip /tmp/terraform.zip -d /tmp && \
+    sudo mv /tmp/terraform /usr/local/bin/ && \
+    rm /tmp/terraform.zip
+    echo "Terraform installed successfully."
+else
+    echo "Terraform is already installed."
+fi
+
+# Check and install Google Cloud SDK
+if ! command -v gcloud &> /dev/null; then
+    echo "Google Cloud SDK not found. Installing..."
+    # Note: This requires sudo privileges for apt-get
+    sudo apt-get update && sudo apt-get install -y apt-transport-https ca-certificates gnupg
+    echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
+    curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -
+    sudo apt-get update && sudo apt-get install -y google-cloud-sdk
+    echo "Google Cloud SDK installed successfully."
+    echo "Please run 'gcloud auth application-default login' to configure local credentials."
+else
+    echo "Google Cloud SDK is already installed."
+fi
+
+
 # Deactivate any active environment within the script's session to ensure a clean, predictable state.
 conda deactivate &> /dev/null || true
 
