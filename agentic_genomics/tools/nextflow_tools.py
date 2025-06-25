@@ -25,9 +25,7 @@ class CreateNextflowConfigTool(BaseTool):
     def _run(self, file_path: str, content: str) -> str:
         """Writes the config content to a file."""
         try:
-            config_path = Path(file_path)
-            config_path.parent.mkdir(parents=True, exist_ok=True)  # Ensure directory exists
-            config_path.write_text(content)
+            config_path.write_text(config_content)
             return f"Successfully created nextflow.config at {str(config_path)}"
         except Exception as e:
             return f"Error creating nextflow.config: {e}"

@@ -2,10 +2,6 @@ from google.adk.agents import LlmAgent
 from google.adk.tools import get_user_choice
 from tools.nextflow_tools import CreateNextflowConfigTool, CreateParamsJsonTool
 
-# Instantiate the tools
-create_nextflow_config_tool = CreateNextflowConfigTool()
-create_params_json_tool = CreateParamsJsonTool()
-
 ConfiguratorAgent = LlmAgent(
     name="configurator_agent",
     model='gemini-2.5-pro-preview-05-06',
@@ -30,7 +26,7 @@ ConfiguratorAgent = LlmAgent(
     """,
     tools=[
         get_user_choice,
-        create_nextflow_config_tool,
-        create_params_json_tool,
+        CreateNextflowConfigTool(),
+        CreateParamsJsonTool(),
     ],
 )
