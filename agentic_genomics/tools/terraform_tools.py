@@ -98,6 +98,7 @@ class ExecuteTerraformApplyTool(BaseTool):
     def _run(self, blueprint_path: str) -> str:
         """Runs terraform init and apply, capturing output."""
         try:
+            # Run terraform init first and check its success
             subprocess.run(["terraform", "init", "-input=false"], cwd=blueprint_path, capture_output=True, text=True, check=True)
             apply_result = subprocess.run(["terraform", "apply", "-auto-approve", "-input=false"], cwd=blueprint_path, capture_output=True, text=True, check=True)
             return f"Terraform apply successful.\nSTDOUT:\n{apply_result.stdout}"

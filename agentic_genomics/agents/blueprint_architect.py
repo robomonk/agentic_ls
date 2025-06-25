@@ -2,9 +2,6 @@ from google.adk.agents import LlmAgent
 from google.adk.tools import get_user_choice
 from tools.terraform_tools import CreateClusterToolkitBlueprintTool
 
-# Instantiate the tool
-create_cluster_toolkit_blueprint_tool = CreateClusterToolkitBlueprintTool()
-
 
 BlueprintArchitectAgent = LlmAgent(
     name="blueprint_architect_agent",
@@ -26,6 +23,6 @@ BlueprintArchitectAgent = LlmAgent(
     """,
     tools=[
         get_user_choice,
-        create_cluster_toolkit_blueprint_tool,
+        CreateClusterToolkitBlueprintTool(),
     ],
 )

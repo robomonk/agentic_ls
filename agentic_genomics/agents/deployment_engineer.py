@@ -2,9 +2,6 @@ from google.adk.agents import LlmAgent
 from google.adk.tools import get_user_choice
 from tools.terraform_tools import ExecuteTerraformApplyTool
 
-# Instantiate the tool
-execute_terraform_apply_tool = ExecuteTerraformApplyTool()
-
 
 DeploymentEngineerAgent = LlmAgent(
     name="deployment_engineer_agent",
@@ -22,6 +19,6 @@ DeploymentEngineerAgent = LlmAgent(
     """,
     tools=[
         get_user_choice,
-        execute_terraform_apply_tool,
+        ExecuteTerraformApplyTool(),
     ],
 )
